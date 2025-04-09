@@ -6,10 +6,13 @@ using UnityEngine.Events;
 public class scr_RecordedGameObject : MonoBehaviour, int_RecordedObject
 {
     [SerializeField]
+    private UnityEvent<bool> RecordingChanged;
+
+    [SerializeField]
     private UnityEvent<bool> PlaybackChanged;
 
     [SerializeField]
-    private UnityEvent<Transform> PlaybackDataUpdated;
+    private UnityEvent<Vector3, Vector3, Vector3> PlaybackDataUpdated;
 
 
     // Data
@@ -29,9 +32,10 @@ public class scr_RecordedGameObject : MonoBehaviour, int_RecordedObject
     // Functions
 
     /* --- Recorded Object Interface --- */
+
     public void SetRecording(bool value)
     {
-        // No need to know if recording for this.
+        RecordingChanged.Invoke(value);
     }
 
     public void SetPlayback(bool value)
@@ -42,6 +46,9 @@ public class scr_RecordedGameObject : MonoBehaviour, int_RecordedObject
     public void FromJSON(string json)
     {
         JsonUtility.FromJsonOverwrite(json, this);
+
+        PlaybackDataUpdated.Invoke(new Vector3(posx, posy, posz), new Vector3(rotx, roty, rotx), 
+            new Vector3(scalex, scaley, scalez));
     }
 
     public string ToJSON()

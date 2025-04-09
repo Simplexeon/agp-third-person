@@ -53,6 +53,24 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Record"",
+                    ""type"": ""Button"",
+                    ""id"": ""24384625-8978-4df8-acd4-ddb8fea11b9a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Playback"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa2bbda2-603a-440e-a584-e29fe2a980e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +150,28 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3bac628-5a51-4097-968a-3a9606da5aa9"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Record"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46aabc25-a48d-4334-9823-a3eeb14bfd5a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Playback"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +183,8 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
         m_Movement_Movement = m_Movement.FindAction("Movement", throwIfNotFound: true);
         m_Movement_Look = m_Movement.FindAction("Look", throwIfNotFound: true);
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
+        m_Movement_Record = m_Movement.FindAction("Record", throwIfNotFound: true);
+        m_Movement_Playback = m_Movement.FindAction("Playback", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,6 +249,8 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Movement;
     private readonly InputAction m_Movement_Look;
     private readonly InputAction m_Movement_Jump;
+    private readonly InputAction m_Movement_Record;
+    private readonly InputAction m_Movement_Playback;
     public struct MovementActions
     {
         private @ia_DefaultPlayer m_Wrapper;
@@ -214,6 +258,8 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Movement_Movement;
         public InputAction @Look => m_Wrapper.m_Movement_Look;
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
+        public InputAction @Record => m_Wrapper.m_Movement_Record;
+        public InputAction @Playback => m_Wrapper.m_Movement_Playback;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +278,12 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Record.started += instance.OnRecord;
+            @Record.performed += instance.OnRecord;
+            @Record.canceled += instance.OnRecord;
+            @Playback.started += instance.OnPlayback;
+            @Playback.performed += instance.OnPlayback;
+            @Playback.canceled += instance.OnPlayback;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -245,6 +297,12 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Record.started -= instance.OnRecord;
+            @Record.performed -= instance.OnRecord;
+            @Record.canceled -= instance.OnRecord;
+            @Playback.started -= instance.OnPlayback;
+            @Playback.performed -= instance.OnPlayback;
+            @Playback.canceled -= instance.OnPlayback;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -267,5 +325,7 @@ public partial class @ia_DefaultPlayer: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnRecord(InputAction.CallbackContext context);
+        void OnPlayback(InputAction.CallbackContext context);
     }
 }

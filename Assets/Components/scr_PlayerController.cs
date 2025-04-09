@@ -29,11 +29,27 @@ public class s_PlayerController : MonoBehaviour
     private GameObject cameraFollowTarget;
 
 
+    [SerializeField]
+    private scr_RecordedGameObject recordedObject;
+
+
     // Data
 
     private ia_DefaultPlayer inputActions;
 
     private Vector3 velocity;
+
+    private bool recording;
+    private bool playback;
+
+    [SerializeField]
+    private GameObject playbackObject;
+
+    [SerializeField]
+    private scr_Recorder recorder;
+
+    [SerializeField]
+    private scr_Recordable recordable;
 
 
 
@@ -53,6 +69,9 @@ public class s_PlayerController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        playback = false;
+        recording = false;
     }
 
 
@@ -76,6 +95,11 @@ public class s_PlayerController : MonoBehaviour
         velocity = Vector3.Lerp(velocity, targetVelocity, accelerationMethod * Time.fixedDeltaTime);
 
         gameObject.transform.position += velocity;
+
+        if(recording && velocity.sqrMagnitude > 0)
+        {
+            UpdateRecordedObject();
+        }
     }
 
 
@@ -98,5 +122,60 @@ public class s_PlayerController : MonoBehaviour
     public void OnJumpPressed(InputAction.CallbackContext callbackContext)
     {
 
+    }
+
+
+    public void RecordPressed()
+    {
+        SetRecording(!recording);
+    }
+
+    public void SetRecording(bool value)
+    {
+        recording = value;
+
+        if(recording)
+        {
+            recorder.BeginRecording();
+        }
+        else
+        {
+            recorder.EndRecording();
+        }
+    }
+
+    public void SetPlayback(bool value)
+    {
+        playback = value;
+
+        if(playback)
+        {
+            // Create shadow object to record data.
+        }
+    }
+
+    public void UpdateRecordedObject()
+    {
+        recordedObject.posx = gameObject.transform.position.x;
+        recordedObject.posy = gameObject.transform.position.y;
+        recordedObject.posz = gameObject.transform.position.z;
+
+        Vector3 euler = gameObject.transform.rotation.eulerAngles;
+        recordedObject.rotx = euler.x;
+        recordedObject.roty = euler.y;
+        recordedObject.rotz = euler.z;
+
+        recordedObject.scalex = gameObject.transform.localScale.x;
+        recordedObject.scaley = gameObject.transform.localScale.y;
+        recordedObject.scalez = gameObject.transform.localScale.z;
+
+        recordable.SaveValue(recordedObject);
+    }
+
+    public void PlaybackUpdated(Vector3 pos, Vector3 rot, Vector3 scale)
+    {
+        playbackObject.transform.position = pos;
+        playbackObject.transform.rotation = Quaternion.Euler(rot);
+        playbackObject.transform.localScale = scale;
     }
 }

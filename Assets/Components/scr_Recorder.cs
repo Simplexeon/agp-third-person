@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,12 @@ public class scr_Recorder : MonoBehaviour
     public scr_Recorder()
     {
         recordables = new Dictionary<string, scr_Recordable>();
+        recording = new Dictionary<string, List<str_FrameData>>();
+        playbackPositions = new Dictionary<string, int>();
+
+        inRecording = false;
+        inPlayback = false;
+        recordingTime = 0;
     }
 
 
@@ -115,11 +122,13 @@ public class scr_Recorder : MonoBehaviour
     {
         inRecording = true;
         recordingTime = 0;
+        Debug.Log("Started Recording");
     }
 
     public void EndRecording()
     {
         inRecording = false;
+        Debug.Log("Ended Recording");
     }
 
     public void StartPlayback()
@@ -134,6 +143,8 @@ public class scr_Recorder : MonoBehaviour
         recordables[name] = recordable;
         recording[name] = new List<str_FrameData>();
         playbackPositions[name] = 0;
+
+        Debug.Log("Registered " + name);
     }
 
     public void RecordValue(string recordID, string data)
@@ -141,5 +152,7 @@ public class scr_Recorder : MonoBehaviour
         if (!recording.ContainsKey(recordID)) return;
 
         recording[recordID].Add(new str_FrameData(recordingTime, data));
+
+        Debug.Log("Recorded data " + recordID + ": " + data);
     }
 }
