@@ -125,10 +125,23 @@ public class s_PlayerController : MonoBehaviour
     }
 
 
-    public void RecordPressed()
+    public void RecordPressed(InputAction.CallbackContext callbackContext)
     {
-        SetRecording(!recording);
+        if(callbackContext.performed)
+        {
+            SetRecording(!recording);
+        }
     }
+
+
+    public void PlaybackPressed(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            SetPlayback(!playback);
+        }
+    }
+
 
     public void SetRecording(bool value)
     {
@@ -151,6 +164,8 @@ public class s_PlayerController : MonoBehaviour
         if(playback)
         {
             // Create shadow object to record data.
+
+            recorder.StartPlayback();
         }
     }
 
