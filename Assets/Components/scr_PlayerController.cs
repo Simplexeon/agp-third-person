@@ -23,6 +23,9 @@ public class s_PlayerController : MonoBehaviour
     private float mouseSens;
 
     [SerializeField]
+    private float jumpStrength;
+
+    [SerializeField]
     private Rigidbody rigidBody;
 
     [SerializeField]
@@ -72,6 +75,8 @@ public class s_PlayerController : MonoBehaviour
 
         playback = false;
         recording = false;
+
+        recordable.RecordedObject = recordedObject;
     }
 
 
@@ -121,7 +126,10 @@ public class s_PlayerController : MonoBehaviour
 
     public void OnJumpPressed(InputAction.CallbackContext callbackContext)
     {
+        if(callbackContext.performed)
+        {
 
+        }
     }
 
 

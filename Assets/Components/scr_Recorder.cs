@@ -135,6 +135,12 @@ public class scr_Recorder : MonoBehaviour
     {
         inPlayback = true;
         recordingTime = 0;
+
+        foreach(KeyValuePair<string, scr_Recordable> pair in recordables)
+        {
+            pair.Value.SetPlayback(true);
+            playbackPositions[pair.Key] = 0;
+        }
     }
 
 

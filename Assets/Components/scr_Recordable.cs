@@ -11,7 +11,7 @@ public class scr_Recordable : MonoBehaviour
     private scr_Recorder Recorder;
 
     [SerializeField]
-    private int_RecordedObject RecordedObject;
+    public int_RecordedObject RecordedObject;
 
     // RecordID, Object JSON
     [SerializeField]
